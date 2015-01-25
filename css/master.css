@@ -2,11 +2,11 @@ body { background: url(/imgs/argyle.png) repeat; }
 
 #title { font: 2.5em Museo; color: white; text-align: center; margin-top: 40px; }
 
-#content { width: 500px; margin: auto; }
+#content { width: 700px; margin: auto; }
 
 #reason { font: 1.5em MuseoItalic; color: white; text-align: center; margin-top: 150px; height: 50px; }
 
-#links { text-align: center; margin-top: 300px; }
+#links { text-align: center; margin-top: 275px; }
 
 #links a { font: 1em Museo; color: #888; background-color: #151515; padding: 6px 9px; text-decoration: none; border-radius: 14px; }
 
