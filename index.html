@@ -1,0 +1,95 @@
+<html>
+  <head>
+  	<title>Love you Angie! &lt;3</title>
+    <link rel="stylesheet" href="/css/master.css">
+    <link rel="stylesheet" href="/type/museo/stylesheet.css">
+    <link rel="stylesheet" href="/type/museo-italic/stylesheet.css">
+    <script src="/js/jquery.min.js"></script>
+  </head>
+
+  <body>
+  	<div id="content">
+  	  <div id="title">
+        Why I
+        <img src="/imgs/heart.png" style="margin-bottom:-8px">
+        Angie
+  	  </div>
+  	  <div id="reason"></div>
+  	  <div id="links">
+        <a href="#" id="permalink">Permalink</a>
+        <a href="/">Next</a>
+  	  </div>
+  	</div>
+    <div id='twitter'><a href='http://twitter.com/loveyouangiee'><img src="/imgs/twitter.png"></a></div>
+    <div id='github'><a href='http://github.com/saiko-chriskun/loveyouangie'><img width="45" src="/imgs/github.png"></a></div>
+  </body>
+
+  <script>
+    if (window.location.hash) {
+      $.get(
+        'reasons.txt',
+        {}, function(rsp){
+          reasons = rsp.split('\n')
+          if (reasons[reasons.length-1] == '') { reasons.pop() }
+          $('#reason').text(reasons[parseInt(window.location.hash.substring(1))])
+          $('#permalink').attr('href', 'http://loveyouangie.com/' + window.location.hash)
+        }, 'html')
+    } else {
+      Object.size = function(obj) {
+        var size = 0, key
+        for (key in obj) {
+          if (obj.hasOwnProperty(key)) size++
+        }
+        return size
+      }
+      reason = '', unseen = {}, unseen_array = []
+      $.get(
+        'reasons.txt',
+        {}, function(rsp){
+          reasons = rsp.split('\n')
+          if (reasons[reasons.length-1] == '') { reasons.pop() }
+          for (var i=0; i<reasons.length; i++) {
+            unseen[i] = reasons[i]
+          }
+          try {
+            seen = JSON.parse(localStorage.getItem('seen'))
+            for (var i=0; i<seen.length; i++) {
+              delete unseen[seen[i]]
+            }
+          } catch(err){ seen = [] }
+          if (Object.size(unseen) > 1) {
+            $.get(
+              'http://www.random.org/integers/?num=1&min=0&col=1&base=10&format=plain&rnd=new&max=' + (Object.size(unseen) - 1),
+              {}, function(rsp) {
+                chosen = parseInt(rsp)
+                for (k in unseen) {
+                  unseen_array.push(unseen[k])
+                }
+                reason = unseen_array[chosen]
+                for (k in unseen) {
+                  if (unseen[k] == reason) {
+                    seen.push(k)
+                    $('#permalink').attr('href', 'http://loveyouangie.com/#' + k)
+                  }
+                }
+                localStorage.setItem('seen', JSON.stringify(seen))
+                $('#reason').text(reason)
+              },
+              'html'
+            )
+          } else {
+            for (k in unseen) {
+              unseen_array.push(unseen[k])
+              seen = [k]
+              $('#permalink').attr('href', 'http://loveyouangie.com/#' + k)
+            }
+            reason = unseen_array[0]
+            localStorage.setItem('seen', JSON.stringify(seen))
+            $('#reason').text(reason)
+          }
+        },
+        'html'
+      )
+    }
+  </script>
+</html>
