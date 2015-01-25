@@ -58,25 +58,19 @@
             }
           } catch(err){ seen = [] }
           if (Object.size(unseen) > 1) {
-            $.get(
-              'http://www.random.org/integers/?num=1&min=0&col=1&base=10&format=plain&rnd=new&max=' + (Object.size(unseen) - 1),
-              {}, function(rsp) {
-                chosen = parseInt(rsp)
-                for (k in unseen) {
-                  unseen_array.push(unseen[k])
+              chosen = Math.floor(Math.random() * (Object.size(unseen) - 1))
+              for (k in unseen) {
+                unseen_array.push(unseen[k])
+              }
+              reason = unseen_array[chosen]
+              for (k in unseen) {
+                if (unseen[k] == reason) {
+                  seen.push(k)
+                  $('#permalink').attr('href', 'http://loveyouangie.com/#' + k)
                 }
-                reason = unseen_array[chosen]
-                for (k in unseen) {
-                  if (unseen[k] == reason) {
-                    seen.push(k)
-                    $('#permalink').attr('href', 'http://loveyouangie.com/#' + k)
-                  }
-                }
-                localStorage.setItem('seen', JSON.stringify(seen))
-                $('#reason').text(reason)
-              },
-              'html'
-            )
+              }
+              localStorage.setItem('seen', JSON.stringify(seen))
+              $('#reason').text(reason)
           } else {
             for (k in unseen) {
               unseen_array.push(unseen[k])
